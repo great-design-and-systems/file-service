@@ -17,16 +17,22 @@ module.exports = {
 function uploadSingleFile(file, userId, callback) {
     new CreateUploadFile(file.originalname, file.mimetype, file.size, userId, function (errUploadedFile, uploadedFile) {
         if (errUploadedFile) {
+            fs.unlink(file.path);
             callback({
                 message: 'Error creating uploaded file ' + file.originalname
             });
         } else {
             fs.readFile(file.path, function (errFilePath, fileData) {
                 if (errFilePath) {
+                    fs.unlink(file.path);
                     console.error('upload-single-file', errFilePath);
+                    callback({
+                        message: 'Failed to read file ' + file.originalname
+                    });
                 } else {
                     new CreateUploadedFileContent(uploadedFile._id, fileData, 0, function (errContent) {
                         if (errContent) {
+                            fs.unlink(file.path);
                             callback(errContent);
                         } else {
                             fs.unlink(file.path, function (errUnlink) {
@@ -69,6 +75,7 @@ function downloadFile(fileId, callback) {
 function updateSingleFileContent(file, fileId, callback) {
     fs.readFile(file.path, function (err, newDataFile) {
         if (err) {
+            fs.unlink(file.path);
             console.error('update-single-file', err);
             callback({
                 message: 'Failed to read file ' + file.originalname
@@ -76,6 +83,7 @@ function updateSingleFileContent(file, fileId, callback) {
         } else {
             new UpdateContentFileById(fileId, newDataFile, function (err) {
                 if (err) {
+                    fs.unlink(file.path);
                     callback(err);
                 } else {
                     fs.unlink(file.path, function (errUnlink) {
