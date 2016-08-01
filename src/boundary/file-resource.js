@@ -9,8 +9,17 @@ function execute(app) {
         res.status(200).send({
             domain: process.env.DOMAIN_NAME || 'File',
             links: {
-                uploadSingleFile: 'http://' + req.headers.host + API + 'upload-single-file/{userId}',
-                downloadFile: 'http://' + req.headers.host + API + 'upload-single-file/{fileId}'
+                post: {
+                    uploadSingleFile: 'http://' + req.headers.host + API + 'upload-single-file/{userId}',
+                    updateSingleFileContent: 'http://' + req.headers.host + API + 'update-single-file-content/{fileId}'
+                },
+                get: {
+                    downloadFile: 'http://' + req.headers.host + API + 'upload-single-file/{fileId}'
+                },
+                delete: {
+                    deleteFile: 'http://' + req.headers.host + API + '/{fileId}'
+                }
+
             }
         });
     });
