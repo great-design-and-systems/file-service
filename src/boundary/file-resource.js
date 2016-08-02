@@ -2,7 +2,7 @@
 var API = process.env.API_NAME || '/api/file/';
 var UPLOAD_DIR = process.env.UPLOAD_DIR || '/uploads';
 var multer = require('multer');
-var upload = multer({dest: UPLOAD_DIR});
+var upload = multer({ dest: UPLOAD_DIR });
 var File = require('./file');
 function execute(app) {
     app.get('/', function (req, res) {
@@ -27,19 +27,19 @@ function execute(app) {
     app.get('/upload-form', function (req, res) {
         res.status(200)
             .send('<html><body>' +
-                '<form name="upload" method="post" action="api/file/upload-single-file/0001" enctype="multipart/form-data">' +
-                '<input type="file" name="uploadFile">' +
-                '<input type="submit" value="Submit">' +
-                '</form></body></html>');
+            '<form name="upload" method="post" action="api/file/upload-single-file/0001" enctype="multipart/form-data">' +
+            '<input type="file" name="uploadFile">' +
+            '<input type="submit" value="Submit">' +
+            '</form></body></html>');
     });
 
     app.get('/update-form/:fileId', function (req, res) {
         res.status(200)
             .send('<html><body>' +
-                '<form name="upload" method="post" action="' + 'http://' + req.headers.host + '/api/file/update-single-file-content/' + req.params.fileId + '" enctype="multipart/form-data">' +
-                '<input type="file" name="uploadFile">' +
-                '<input type="submit" value="Submit">' +
-                '</form></body></html>');
+            '<form name="upload" method="post" action="' + 'http://' + req.headers.host + '/api/file/update-single-file-content/' + req.params.fileId + '" enctype="multipart/form-data">' +
+            '<input type="file" name="uploadFile">' +
+            '<input type="submit" value="Submit">' +
+            '</form></body></html>');
     });
     app.post(API + 'upload-single-file/:userId', upload.single('uploadFile'), function (req, res) {
         File.uploadSingleFile(req.file, req.params.userId, function (err, result) {
@@ -50,9 +50,10 @@ function execute(app) {
             } else {
                 res.send({
                     message: 'File has been uploaded',
+                    fileId: result._id,
                     links: {
                         downloadFile: 'http://' + req.headers.host + API + 'download-file/' + result._id,
-                        post: {updateSingleFileContent: 'http://' + req.headers.host + API + 'update-single-file-content/' + result._id},
+                        post: { updateSingleFileContent: 'http://' + req.headers.host + API + 'update-single-file-content/' + result._id },
                         delete: {
                             deleteFile: 'http://' + req.headers.host + API + '/' + result._id
                         }
