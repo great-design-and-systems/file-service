@@ -14,7 +14,7 @@ function execute(app) {
                     updateSingleFileContent: 'http://' + req.headers.host + API + 'update-single-file-content/{fileId}'
                 },
                 get: {
-                    downloadFile: 'http://' + req.headers.host + API + 'upload-single-file/{fileId}'
+                    downloadFile: 'http://' + req.headers.host + API + 'download-file/{fileId}'
                 },
                 delete: {
                     deleteFile: 'http://' + req.headers.host + API + '/{fileId}'
