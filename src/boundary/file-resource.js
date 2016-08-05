@@ -9,17 +9,22 @@ function execute(app) {
         res.status(200).send({
             domain: process.env.DOMAIN_NAME || 'File',
             links: {
-                post: {
-                    uploadSingleFile: 'http://' + req.headers.host + API + 'upload-single-file/{userId}',
-                    updateSingleFileContent: 'http://' + req.headers.host + API + 'update-single-file-content/{fileId}'
+                uploadSingleFile: {
+                    method: 'POST',
+                    url: 'http://' + req.headers.host + API + 'upload-single-file/:userId'
                 },
-                get: {
-                    downloadFile: 'http://' + req.headers.host + API + 'upload-single-file/{fileId}'
+                updateSingleFileContent: {
+                    method: 'POST',
+                    url: 'http://' + req.headers.host + API + 'update-single-file-content/:fileId'
                 },
-                delete: {
-                    deleteFile: 'http://' + req.headers.host + API + '/{fileId}'
+                downloadFile: {
+                    method: 'GET',
+                    url: 'http://' + req.headers.host + API + 'download-file/:fileId'
+                },
+                deleteFile: {
+                    method: 'DELETE',
+                    url: 'http://' + req.headers.host + API + '/:fileId'
                 }
-
             }
         });
     });
