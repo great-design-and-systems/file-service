@@ -1,5 +1,6 @@
 'use strict';
 var UploadedFileContent = require('../entity/uploaded-file-content');
+var logger = require('./get-logger');
 
 function execute(fileId, content, contentSequence, callback) {
     UploadedFileContent.create({
@@ -8,7 +9,7 @@ function execute(fileId, content, contentSequence, callback) {
         contentSequence: contentSequence
     }, function (err, result) {
         if (err) {
-            console.error('create-uploaded-file-content', err);
+            logger.error('create-uploaded-file-content', err);
             callback(err);
         } else {
             callback(undefined, result);

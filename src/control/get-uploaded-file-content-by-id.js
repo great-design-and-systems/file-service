@@ -1,12 +1,13 @@
 'use strict';
 var UploadedFileContent = require('../entity/uploaded-file-content');
+var logger = require('./get-logger');
 
 function execute(fileId, callback) {
     UploadedFileContent.find({
         fileId: fileId
     }, function (err, result) {
         if (err) {
-            console.error('get-uploaded-file-content', err);
+            logger.error('get-uploaded-file-content', err);
             callback({
                 message: 'Failed to get uploaded file content.'
             });

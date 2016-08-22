@@ -1,5 +1,6 @@
 'use strict';
 var UploadedFile = require('../entity/uploaded-file');
+var logger = require('./get-logger');
 
 function execute(name, type, size, createdBy, callback) {
     UploadedFile.create({
@@ -9,7 +10,7 @@ function execute(name, type, size, createdBy, callback) {
         createdBy: createdBy
     }, function (err, result) {
         if (err) {
-            console.error('create-uploaded-file', err);
+            logger.error('create-uploaded-file', err);
             callback(err);
         } else {
             callback(undefined, result);
