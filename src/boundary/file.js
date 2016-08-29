@@ -23,7 +23,7 @@ function uploadSingleFile(file, userId, callback) {
                 message: 'Error creating uploaded file ' + file.originalname
             });
         } else {
-            fs.readFile(file.path, 'utf-8', function(errFilePath, fileData) {
+            fs.readFile(file.path, function(errFilePath, fileData) {
                 if (errFilePath) {
                     fs.unlink(file.path);
                     console.error('upload-single-file', errFilePath);
