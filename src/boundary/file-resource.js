@@ -23,7 +23,7 @@ function execute(app) {
                 },
                 deleteFile: {
                     method: 'DELETE',
-                    url: 'http://' + req.headers.host + API + '/:fileId'
+                    url: 'http://' + req.headers.host + API + ':fileId'
                 }
             }
         });
