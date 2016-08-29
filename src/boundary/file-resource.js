@@ -4,8 +4,9 @@ var UPLOAD_DIR = process.env.UPLOAD_DIR || '/uploads';
 var multer = require('multer');
 var upload = multer({ dest: UPLOAD_DIR });
 var File = require('./file');
+
 function execute(app) {
-    app.get('/', function (req, res) {
+    app.get('/', function(req, res) {
         res.status(200).send({
             domain: process.env.DOMAIN_NAME || 'File',
             links: {
@@ -21,6 +22,10 @@ function execute(app) {
                     method: 'GET',
                     url: 'http://' + req.headers.host + API + 'download-file/:fileId'
                 },
+                readFile: {
+                    method: 'GET',
+                    url: 'http://' + req.headers.host + API + 'read-file/:fileId'
+                },
                 deleteFile: {
                     method: 'DELETE',
                     url: 'http://' + req.headers.host + API + ':fileId'
@@ -29,25 +34,25 @@ function execute(app) {
         });
     });
 
-    app.get('/upload-form', function (req, res) {
+    app.get('/upload-form', function(req, res) {
         res.status(200)
             .send('<html><body>' +
-            '<form name="upload" method="post" action="api/file/upload-single-file/0001" enctype="multipart/form-data">' +
-            '<input type="file" name="uploadFile">' +
-            '<input type="submit" value="Submit">' +
-            '</form></body></html>');
+                '<form name="upload" method="post" action="api/file/upload-single-file/0001" enctype="multipart/form-data">' +
+                '<input type="file" name="uploadFile">' +
+                '<input type="submit" value="Submit">' +
+                '</form></body></html>');
     });
 
-    app.get('/update-form/:fileId', function (req, res) {
+    app.get('/update-form/:fileId', function(req, res) {
         res.status(200)
             .send('<html><body>' +
-            '<form name="upload" method="post" action="' + 'http://' + req.headers.host + '/api/file/update-single-file-content/' + req.params.fileId + '" enctype="multipart/form-data">' +
-            '<input type="file" name="uploadFile">' +
-            '<input type="submit" value="Submit">' +
-            '</form></body></html>');
+                '<form name="upload" method="post" action="' + 'http://' + req.headers.host + '/api/file/update-single-file-content/' + req.params.fileId + '" enctype="multipart/form-data">' +
+                '<input type="file" name="uploadFile">' +
+                '<input type="submit" value="Submit">' +
+                '</form></body></html>');
     });
-    app.post(API + 'upload-single-file/:userId', upload.single('uploadFile'), function (req, res) {
-        File.uploadSingleFile(req.file, req.params.userId, function (err, result) {
+    app.post(API + 'upload-single-file/:userId', upload.single('uploadFile'), function(req, res) {
+        File.uploadSingleFile(req.file, req.params.userId, function(err, result) {
             if (err) {
                 res.status(500).send({
                     message: 'Error uploading file ' + req.file.originalName
@@ -67,8 +72,8 @@ function execute(app) {
             }
         });
     });
-    app.get(API + 'download-file/:fileId', function (req, res) {
-        File.downloadFile(req.params.fileId, function (err, result) {
+    app.get(API + 'download-file/:fileId', function(req, res) {
+        File.downloadFile(req.params.fileId, function(err, result) {
             if (err) {
                 res.status(404).send({
                     message: 'File not found'
@@ -80,8 +85,20 @@ function execute(app) {
             }
         });
     });
-    app.post(API + 'update-single-file-content/:fileId', upload.single('uploadFile'), function (req, res) {
-        File.updateSingleFileContent(req.file, req.params.fileId, function (err) {
+    app.get(API + 'read-file/:fileId', function(req, res) {
+        File.downloadFile(req.params.fileId, function(err, result) {
+            if (err) {
+                res.status(404).send({
+                    message: 'File not found'
+                });
+            } else {
+                res.setHeader('Content-type', 'application/octet-stream');
+                res.status(200).send(result.contents[0].content);
+            }
+        });
+    });
+    app.post(API + 'update-single-file-content/:fileId', upload.single('uploadFile'), function(req, res) {
+        File.updateSingleFileContent(req.file, req.params.fileId, function(err) {
             if (err) {
                 res.status(500).send({
                     message: 'Error uploading file ' + req.file.originalName
@@ -96,8 +113,8 @@ function execute(app) {
             }
         });
     });
-    app.delete(API + ':fileId', function (req, res) {
-        File.deleteFile(req.params.fileId, function (err, result) {
+    app.delete(API + ':fileId', function(req, res) {
+        File.deleteFile(req.params.fileId, function(err, result) {
             if (err) {
                 res.status(500).send(err);
             } else {

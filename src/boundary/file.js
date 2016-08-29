@@ -14,15 +14,16 @@ module.exports = {
     updateSingleFileContent: updateSingleFileContent,
     deleteFile: deleteFile
 };
+
 function uploadSingleFile(file, userId, callback) {
-    new CreateUploadFile(file.originalname, file.mimetype, file.size, userId, function (errUploadedFile, uploadedFile) {
+    new CreateUploadFile(file.originalname, file.mimetype, file.size, userId, function(errUploadedFile, uploadedFile) {
         if (errUploadedFile) {
             fs.unlink(file.path);
             callback({
                 message: 'Error creating uploaded file ' + file.originalname
             });
         } else {
-            fs.readFile(file.path, function (errFilePath, fileData) {
+            fs.readFile(file.path, 'utf-8', function(errFilePath, fileData) {
                 if (errFilePath) {
                     fs.unlink(file.path);
                     console.error('upload-single-file', errFilePath);
@@ -30,12 +31,12 @@ function uploadSingleFile(file, userId, callback) {
                         message: 'Failed to read file ' + file.originalname
                     });
                 } else {
-                    new CreateUploadedFileContent(uploadedFile._id, fileData, 0, function (errContent) {
+                    new CreateUploadedFileContent(uploadedFile._id, fileData, 0, function(errContent) {
                         if (errContent) {
                             fs.unlink(file.path);
                             callback(errContent);
                         } else {
-                            fs.unlink(file.path, function (errUnlink) {
+                            fs.unlink(file.path, function(errUnlink) {
                                 if (errUnlink) {
                                     console.error('upload-single-file', errUnlink);
                                     callback({
@@ -52,28 +53,39 @@ function uploadSingleFile(file, userId, callback) {
         }
     });
 }
+
 function downloadFile(fileId, callback) {
-    new GetUploadedFileById(fileId, function (errFile, uploadedFile) {
+    new GetUploadedFileById(fileId, function(errFile, uploadedFile) {
         if (errFile) {
             callback(errFile);
         } else {
-            new GetUploadedFileContentById(fileId, function (errFileContent, fileContents) {
-                if (errFileContent) {
-                    callback(errFileContent);
-                } else {
-                    callback(undefined, {
-                        fileName: uploadedFile.fileName,
-                        fileSize: uploadedFile.fileSize,
-                        fileType: uploadedFile.fileType,
-                        contents: fileContents
-                    });
-                }
-            });
+            if (uploadedFile) {
+                new GetUploadedFileContentById(fileId, function(errFileContent, fileContents) {
+                    var fileName = uploadedFile.fileName;
+                    var fileSize = uploadedFile.fileSize;
+                    var fileType = uploadedFile.fileType;
+                    if (errFileContent) {
+                        callback(errFileContent);
+                    } else {
+                        callback(undefined, {
+                            fileName: fileName,
+                            fileSize: fileSize,
+                            fileType: fileType,
+                            contents: fileContents
+                        });
+                    }
+                });
+            } else {
+                callback({
+                    message: 'File not found'
+                });
+            }
         }
     });
 }
+
 function updateSingleFileContent(file, fileId, callback) {
-    fs.readFile(file.path, function (err, newDataFile) {
+    fs.readFile(file.path, function(err, newDataFile) {
         if (err) {
             fs.unlink(file.path);
             console.error('update-single-file', err);
@@ -81,12 +93,12 @@ function updateSingleFileContent(file, fileId, callback) {
                 message: 'Failed to read file ' + file.originalname
             });
         } else {
-            new UpdateContentFileById(fileId, newDataFile, function (err) {
+            new UpdateContentFileById(fileId, newDataFile, function(err) {
                 if (err) {
                     fs.unlink(file.path);
                     callback(err);
                 } else {
-                    fs.unlink(file.path, function (errUnlink) {
+                    fs.unlink(file.path, function(errUnlink) {
                         if (errUnlink) {
                             console.error('update-single-file', errUnlink);
                             callback({
@@ -95,7 +107,7 @@ function updateSingleFileContent(file, fileId, callback) {
                         } else {
                             new UpdateUploadedFileById(fileId, {
                                 updatedOn: new Date()
-                            }, function (err) {
+                            }, function(err) {
                                 if (err) {
                                     callback(err);
                                 } else {
@@ -109,12 +121,13 @@ function updateSingleFileContent(file, fileId, callback) {
         }
     });
 }
+
 function deleteFile(fileId, callback) {
-    new RemoveContentFileById(fileId, function (err) {
+    new RemoveContentFileById(fileId, function(err) {
         if (err) {
             callback(err);
         } else {
-            new RemoveUploadedFileById(fileId, function (err) {
+            new RemoveUploadedFileById(fileId, function(err) {
                 if (err) {
                     callback(err);
                 } else {
