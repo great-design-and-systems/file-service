@@ -92,7 +92,7 @@ function execute(app) {
                     message: 'File not found'
                 });
             } else {
-                res.setHeader('Content-type', 'application/octet-stream');
+                res.setHeader('Content-type', result.fileType);
                 res.status(200).send(result.contents[0].content);
             }
         });
