@@ -153,6 +153,6 @@ function getFileDetailById(fileId, callback) {
     });
 }
 
-function copyFileFromUrl(url, callback) {
-    new CopyFileFromUrl(url, callback);
+function copyFileFromUrl(url, name, callback) {
+    new CopyFileFromUrl(url, name, callback);
 }

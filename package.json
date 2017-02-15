@@ -4,6 +4,7 @@
   "description": "File service",
   "main": "index.js",
   "scripts": {
+    "dev": "nodemon --exec node index.js",
     "test": "gulp jshint test watch",
     "start": "gulp start",
     "update": "gulp pull",

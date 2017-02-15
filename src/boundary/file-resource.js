@@ -32,17 +32,17 @@ function execute(app) {
                 },
                 getFileDetailById: {
                     method: 'GET',
-                    url: 'http://' + req.headers.host + API + '/get-file-detail-by-id/:fileId'
+                    url: 'http://' + req.headers.host + API + 'get-file-detail-by-id/:fileId'
                 },
                 copyFileFromUrl: {
-                    method: 'GET',
-                    url: 'http://' + req.headers.host + API + '/copy-file-from-url/:url'
+                    method: 'POST',
+                    url: 'http://' + req.headers.host + API + 'copy-file-from-url/:url'
                 }
             }
         });
     });
-    app.get(API + '/copy-file-from-url/:url', function (req, res) {
-        File.copyFileFromUrl(req.params.url, function (err, result) {
+    app.post(API + 'copy-file-from-url', function (req, res) {
+        File.copyFileFromUrl(req.query.url, req.query.name, function (err, result) {
             if (err) {
                 res.status(500).send(err);
             } else {
@@ -70,7 +70,7 @@ function execute(app) {
             '</form></body></html>');
     });
 
-    app.get(API + '/get-file-detail-by-id/:fileId', function (req, res) {
+    app.get(API + 'get-file-detail-by-id/:fileId', function (req, res) {
         File.getFileDetailById(req.params.fileId, function (err, result) {
             if (err) {
                 res.status(500).send({
