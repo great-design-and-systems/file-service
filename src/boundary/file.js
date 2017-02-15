@@ -8,12 +8,14 @@ var UpdateContentFileById = require('../control/update-content-file-by-id');
 var UpdateUploadedFileById = require('../control/update-uploaded-file-by-id');
 var RemoveContentFileById = require('../control/remove-content-file-by-id');
 var RemoveUploadedFileById = require('../control/remove-uploaded-file-by-id');
+var CopyFileFromUrl = require('../control/copy-file-from-url');
 module.exports = {
     uploadSingleFile: uploadSingleFile,
     downloadFile: downloadFile,
     updateSingleFileContent: updateSingleFileContent,
     deleteFile: deleteFile,
-    getFileDetailById: getFileDetailById
+    getFileDetailById: getFileDetailById,
+    copyFileFromUrl: copyFileFromUrl
 };
 
 function uploadSingleFile(file, userId, callback) {
@@ -149,4 +151,8 @@ function getFileDetailById(fileId, callback) {
             callback(undefined, file);
         }
     });
+}
+
+function copyFileFromUrl(url, callback) {
+    new CopyFileFromUrl(url, callback);
 }

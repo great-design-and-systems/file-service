@@ -33,11 +33,25 @@ function execute(app) {
                 getFileDetailById: {
                     method: 'GET',
                     url: 'http://' + req.headers.host + API + '/get-file-detail-by-id/:fileId'
+                },
+                copyFileFromUrl: {
+                    method: 'GET',
+                    url: 'http://' + req.headers.host + API + '/copy-file-from-url/:url'
                 }
             }
         });
     });
-
+    app.get(API + '/copy-file-from-url/:url', function (req, res) {
+        File.copyFileFromUrl(req.params.url, function (err, result) {
+            if (err) {
+                res.status(500).send(err);
+            } else {
+                res.send({
+                    data: result
+                });
+            }
+        });
+    });
     app.get('/upload-form', function (req, res) {
         res.status(200)
             .send('<html><body>' +
