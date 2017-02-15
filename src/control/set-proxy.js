@@ -1,7 +1,7 @@
 'use strict';
 var PROXY = process.env.PROXY;
 
-function setProxy(request) {
+function SetProxy(request) {
     if (PROXY) {
         request.proxy(PROXY);
     }
@@ -9,5 +9,7 @@ function setProxy(request) {
         getRequest: function () {
             return request;
         }
-    }
+    };
 }
+
+module.exports = SetProxy;

@@ -4,14 +4,14 @@
   "description": "File service",
   "main": "index.js",
   "scripts": {
-        "test": "gulp jshint test watch",
-        "start": "gulp start",
-        "update": "gulp pull",
-        "gulp": "node_modules/.bin/gulp",
-        "stop": "gulp server-stop",
-        "restart": "gulp server-restart",
-        "container-start": "/bin/bash /app/scripts/start.sh",
-        "container": "gulp pull && gulp start"
+    "test": "gulp jshint test watch",
+    "start": "gulp start",
+    "update": "gulp pull",
+    "gulp": "node_modules/.bin/gulp",
+    "stop": "gulp server-stop",
+    "restart": "gulp server-restart",
+    "container-start": "/bin/bash /app/scripts/start.sh",
+    "container": "gulp pull && gulp start"
   },
   "keywords": [
     "file-service"
@@ -42,6 +42,7 @@
     "node-fs": "^0.1.7",
     "run-sequence": "^1.2.2",
     "should": "^9.0.2",
-    "sinon": "^1.17.4"
+    "sinon": "^1.17.4",
+    "unirest": "^0.5.1"
   }
 }
