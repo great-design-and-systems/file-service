@@ -36,7 +36,7 @@ function execute(app) {
                 },
                 copyFileFromUrl: {
                     method: 'POST',
-                    url: 'http://' + req.headers.host + API + 'copy-file-from-url/:url'
+                    url: 'http://' + req.headers.host + API + 'copy-file-from-url'
                 }
             }
         });
@@ -47,7 +47,16 @@ function execute(app) {
                 res.status(500).send(err);
             } else {
                 res.send({
-                    data: result
+                    message: 'File has been copied and uploaded to database',
+                    fileId: result._id,
+                    links: {
+                        downloadFile: 'http://' + req.headers.host + API + 'download-file/' + result._id,
+                        readFile: 'http://' + req.headers.host + API + 'read-file/' + result._id,
+                        post: { updateSingleFileContent: 'http://' + req.headers.host + API + 'update-single-file-content/' + result._id },
+                        delete: {
+                            deleteFile: 'http://' + req.headers.host + API + result._id
+                        }
+                    }
                 });
             }
         });
@@ -98,7 +107,7 @@ function execute(app) {
                         downloadFile: 'http://' + req.headers.host + API + 'download-file/' + result._id,
                         post: { updateSingleFileContent: 'http://' + req.headers.host + API + 'update-single-file-content/' + result._id },
                         delete: {
-                            deleteFile: 'http://' + req.headers.host + API + '/' + result._id
+                            deleteFile: 'http://' + req.headers.host + API + result._id
                         }
                     }
                 });

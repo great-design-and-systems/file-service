@@ -23,6 +23,7 @@
     "body-parser": "^1.15.2",
     "chai": "^3.5.0",
     "chakram": "^1.4.0",
+    "convert-stream": "^1.0.2",
     "express": "^4.14.0",
     "express-interceptor": "^1.2.0",
     "gulp": "^3.9.1",
@@ -44,6 +45,7 @@
     "run-sequence": "^1.2.2",
     "should": "^9.0.2",
     "sinon": "^1.17.4",
+    "stream-to": "^2.0.0",
     "unirest": "^0.5.1"
   }
 }
