@@ -24,6 +24,7 @@
     "chai": "^3.5.0",
     "chakram": "^1.4.0",
     "convert-stream": "^1.0.2",
+    "cors": "^2.8.5",
     "express": "^4.14.0",
     "express-interceptor": "^1.2.0",
     "gulp": "^3.9.1",

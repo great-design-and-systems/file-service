@@ -4,8 +4,10 @@ var morgan = require('morgan');
 var ENV = process.env.APP_ENV || 'dev';
 var PORT = process.env.PORT || '3005';
 var UPLOAD_LIMIT = process.env.UPLOAD_LIMIT || '4000kb';
+var cors = require('cors')
 module.exports = function (app) {
     app.set('port', PORT);
+    app.use(cors());
     app.use(morgan(ENV));
     app.use(bodyParser.urlencoded({
         extended: true
