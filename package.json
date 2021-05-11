@@ -36,7 +36,7 @@
     "http": "0.0.0",
     "jshint": "^2.9.2",
     "jshint-stylish": "^2.2.0",
-    "lodash": "^4.13.1",
+    "lodash": "^4.17.21",
     "log4js": "^0.6.38",
     "mocha": "^2.5.3",
     "mongoose": "^4.5.3",
